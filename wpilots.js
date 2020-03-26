@@ -38,7 +38,7 @@ const DISCONNECTED  = -1;
       JOINED        = 4;
 
 // Default map. This map is used if no other map i specified.
-const DEFAULT_MAP   = {
+const DEFAULT_MAPS   = [{
 	name: 'Battle Royale',
 	author: 'Johan Dahlberg',
 	recommended_players: 8,
@@ -52,7 +52,127 @@ const DEFAULT_MAP   = {
 		[ 0, 11, 11,  0, 11, 11,  0],
 		[51,  0,  0, 51,  0,  0, 51]
 	]
-};
+},
+{
+	"name": "Close Quarters",
+	"author": "Johan Dahlberg",
+	"recommended_players": 2,
+	
+	"rules": {
+		"round_limit": 5,
+	  "powerup_max": 1
+	},
+	
+	"data": [
+		[51, 11, 51],
+		[ 0, 52,  0],
+		[51, 11, 51]
+	]
+},
+{
+	"name": "DIY DIE",
+	"author": "Wade Penistone",
+	"recommended_players": 8,
+	
+	"rules": {
+		"round_limit": 3,
+	  "powerup_max": 0
+	},
+	
+	"data": [
+		[0, 51, 0],
+		[0, 11, 0],
+		[0, 11, 0],
+		[0, 51, 0]
+	]
+},
+{
+	"name": "Four Corners",
+	"author": "Johan Dahlberg",
+	"recommended_players": 8,
+	
+	"rules": {
+	  "powerup_max": 4
+	},
+		
+	"data": [
+		[51,  0,  0, 11,  0,  0, 51],
+		[ 0, 52,  0, 12,  0, 52,  0],
+		[ 0,  0, 51, 11, 51,  0,  0],
+		[11, 12, 11, 11, 11, 12, 11],
+		[ 0,  0, 51, 11, 51,  0,  0],
+		[ 0, 52,  0, 12,  0, 52,  0],
+		[51,  0,  0, 11,  0,  0, 51]
+	]
+},
+{
+	"name": "Gems",
+	"author": "Johan Dahlberg",
+	"recommended_players": 8,
+	
+	"rules": {
+	  "powerup_max": 2
+	},
+		
+	"data": [
+		[51,  0,  0,  0, 51,  0,  0,  0, 51],
+		[ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+		[ 0, 11, 12, 11,  0, 11, 12, 11,  0],
+		[51, 11, 52, 11,  0, 11, 52, 11, 51],
+		[ 0, 11, 12, 11,  0, 11, 12, 11,  0],
+		[ 0,  0,  0,  0,  0,  0,  0,  0,  0],
+		[51,  0,  0,  0, 51,  0,  0,  0, 51]
+	]
+},{
+	"name": "Homebase",
+	"author": "Linus Larsson",
+	"recommended_players": 3,
+	
+	"rules": {
+		"round_limit": 3,
+	  "powerup_max": 2
+	},
+	
+	"data": [
+		[51, 11,  0, 11, 51],
+		[11,  0, 52,  0, 11],
+		[11,  0, 52,  0, 11],
+		[51, 11,  0, 11, 51]
+	]
+},
+{
+	"name": "The Passage",
+	"author": "Johan Dahlberg",
+	"recommended_players": 8,
+	
+	"rules": {
+	  "powerup_max": 4
+	},
+		
+	"data": [
+		[51, 0,  0, 51, 11, 51,  0,  0, 51],
+		[0,  0,  0,  0, 11,  0,  0,  0,  0],
+		[0, 52, 52,  0, 12,  0, 52, 52,  0],
+		[0,  0,  0,  0, 11,  0,  0,  0,  0],
+		[51, 0,  0, 51, 11, 51,  0,  0, 51]
+	]
+},{
+	"name": "Versus",
+	"author": "Johan Dahlberg",
+	"recommended_players": 2,
+	
+	"rules": {
+		"round_limit": 3,
+	  "powerup_max": 0
+	},
+	
+	"data": [
+		[0, 51, 0],
+		[0, 11, 0],
+		[0, 11, 0],
+		[0, 51, 0]
+	]
+}];
 
 // Command line option parser switches
 const SWITCHES = [
@@ -504,7 +624,7 @@ function start_gameserver(maps, options, shared) {
 
     function done(err, map_data) {
       if (!map_data && default_on_fail) {
-        map_data = DEFAULT_MAP;
+        map_data = DEFAULT_MAPS[Math.floor(Math.random() * DEFAULT_MAPS.length)];
       }
 
       if (map_data) {
@@ -529,7 +649,7 @@ function start_gameserver(maps, options, shared) {
 
     if (!map_path) {
       if (maps.length == 0) {
-        done(null, DEFAULT_MAP);
+        done(null, DEFAULT_MAPS[Math.floor(Math.random() * DEFAULT_MAPS.length)]);
         return;
       } else {
         if (next_map_index >= maps.length) {
